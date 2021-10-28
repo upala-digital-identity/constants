@@ -1,0 +1,9 @@
+{
+  "name": "upala-constants",
+  "version": "0.1.0",
+  "description": "Addresses and ABIs of Upala infrastructure smart contracts",
+  "main": "index.js",
+  "author": "Petr Porobov",
+  "license": "MIT",
+  "private": false
+}
