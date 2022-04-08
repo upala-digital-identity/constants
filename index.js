@@ -5,6 +5,29 @@ const ethers = require('ethers')
 const FormatTypes = ethers.utils.FormatTypes
 const chalk = require('chalk')
 
+/*****************
+GLOBAL UTILS/TOOLS
+******************/
+// Tools for other Upala modules 
+// (probably need a separate lib for that)
+
+function validNetworkID(nameOrId) {
+  if (nameOrId == '4' || nameOrId == "Rinkeby" || nameOrId == "rinkeby") return 4
+  if (nameOrId == '31337' || nameOrId == 'Local' || nameOrId == 'local') return 31337
+}
+
+function numConfirmations(networkNameOrId) {
+  let networkID = validNetworkID(networkNameOrId)
+  console.log('Upala constants: networkID', networkID)
+  if (networkID == 31337) return 1
+  if (networkID == 1 || networkID == 4) return 2
+}
+
+/*******************
+INTERNAL UTILS/TOOLS
+********************/
+// Used just within this module
+
 function loadAbis() {
   return JSON.parse(
     fs.readFileSync(abisPath()))
@@ -27,7 +50,6 @@ function addressesPath(chainID) {
   let filename = chainID.toString() + '_addresses.json'
   return path.join(__dirname, '/constants/', filename)
 }
-
 
 class UpalaConstants {
   constructor(chainID, options = {skipLoadFromDisk: false}) {
@@ -96,4 +118,6 @@ READING FROM CONSTANTS
   }
 }
 
+exports.validNetworkID = validNetworkID
+exports.numConfirmations = numConfirmations
 exports.UpalaConstants = UpalaConstants
