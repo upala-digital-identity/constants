@@ -18,9 +18,9 @@ function validNetworkID(nameOrId) {
 
 function numConfirmations(networkNameOrId) {
   let networkID = validNetworkID(networkNameOrId)
-  console.log('Upala constants: networkID', networkID)
+  // console.log('Upala constants: networkID', networkID)
   if (networkID == 31337) return 1
-  if (networkID == 1 || networkID == 4) return 2
+  if (networkID == 1 || networkID == 4) return 4  // let nodes sync
 }
 
 /*******************
