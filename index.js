@@ -12,13 +12,23 @@ GLOBAL UTILS/TOOLS
 // (probably need a separate lib for that)
 
 function validNetworkID(nameOrId) {
-  if (nameOrId == '4' || nameOrId == "Rinkeby" || nameOrId == "rinkeby") return 4
   if (nameOrId == '31337' || nameOrId == 'Local' || nameOrId == 'local') return 31337
+  if (nameOrId == '4' || nameOrId == "Rinkeby" || nameOrId == "rinkeby") return 4
+  if (nameOrId == '100' || nameOrId == 'xDai' || nameOrId == 'xdai') return 100
+  if (nameOrId == '1' || nameOrId == 'Mainnet' || nameOrId == 'mainnet') return 1
+}
+
+function getDaiAddress(networkNameOrId) {
+  let networkID = validNetworkID(networkNameOrId)
+  if (networkID == '31337') return null
+  if (networkID == '4') return '0xbC0dFaA78fe7bc8248b9F857292f680a1630b0C5'  // fakeDai mock of DAI
+  if (networkID == '100') return '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'
+  if (networkID == '1') return '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+  return null
 }
 
 function numConfirmations(networkNameOrId) {
   let networkID = validNetworkID(networkNameOrId)
-  // console.log('Upala constants: networkID', networkID)
   if (networkID == 31337) return 1
   if (networkID == 1 || networkID == 4) return 4  // let nodes sync
 }
@@ -120,4 +130,5 @@ READING FROM CONSTANTS
 
 exports.validNetworkID = validNetworkID
 exports.numConfirmations = numConfirmations
+exports.getDaiAddress = getDaiAddress
 exports.UpalaConstants = UpalaConstants
