@@ -14,7 +14,7 @@ GLOBAL UTILS/TOOLS
 function validNetworkID(nameOrId) {
   if (nameOrId == '31337' || nameOrId == 'Local' || nameOrId == 'local') return 31337
   if (nameOrId == '4' || nameOrId == "Rinkeby" || nameOrId == "rinkeby") return 4
-  if (nameOrId == '100' || nameOrId == 'xDai' || nameOrId == 'xdai') return 100
+  if (nameOrId == '100' || nameOrId == 'xDai' || nameOrId == 'xdai') return 100 // todo add gnosis, Gnosis
   if (nameOrId == '1' || nameOrId == 'Mainnet' || nameOrId == 'mainnet') return 1
 }
 
