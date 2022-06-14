@@ -33,6 +33,12 @@ function numConfirmations(networkNameOrId) {
   if (networkID == 1 || networkID == 4) return 4  // let nodes sync
 }
 
+function isTestNetwork(networkNameOrId) {
+  let networkID = validNetworkID(networkNameOrId)
+  if (networkID == 31337 || networkID == 4) 
+    { return true } else { return false }
+}
+
 /*******************
 INTERNAL UTILS/TOOLS
 ********************/
@@ -131,4 +137,5 @@ READING FROM CONSTANTS
 exports.validNetworkID = validNetworkID
 exports.numConfirmations = numConfirmations
 exports.getDaiAddress = getDaiAddress
+exports.isTestNetwork = isTestNetwork
 exports.UpalaConstants = UpalaConstants
