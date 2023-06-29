@@ -45,28 +45,23 @@ INTERNAL UTILS/TOOLS
 // Used just within this module
 
 function loadAbis() {
-  return JSON.parse(
-    fs.readFileSync(abisPath()))
+  return require(abisPath())
 }
 
 function loadAddresses(chainID) {
-  try {
-    return JSON.parse(fs.readFileSync(addressesPath(chainID)))
-  } catch (err) {
-    return {}
-  }
+  return require(addressesPath(chainID))
 }
 
-// todo remove __dirname - make it simpler. 
 function abisPath() {
-  return path.join(__dirname, '/constants/abis.json')
+  return path.join(__dirname, '/constants/abis.js')
 }
 
 function addressesPath(chainID) {
-  let filename = chainID.toString() + '_addresses.json'
+  let filename = chainID.toString() + '_addresses.js'
   return path.join(__dirname, '/constants/', filename)
 }
 
+// todo generalize class name into smth like NetworkConstants to use in other projects
 class UpalaConstants {
   constructor(chainID, options = {skipLoadFromDisk: false}) {
     this.chainID = chainID
@@ -89,20 +84,27 @@ class UpalaConstants {
     this.abis[contractName] = abi
   }
 
+  // TODO move this to upala manager to get rid of fs here
+  // Clear cache and require
+  // const moduleName = './myfile.js';
+  // delete require.cache[require.resolve(moduleName)];
+
+  // const myFile = require(moduleName);
+  // // Now you can use your file
   // saves abis and addresses on disk (only if difference found with existing)
   save() {
     // Export ABIs
     let savedAbis = loadAbis()
-    if (!_.isEqual(savedAbis, this.abis)) { 
-      console.log(chalk.red('\n\n\nWarning ABIs changed.\n\n\n'))
-      fs.writeFileSync(abisPath(), JSON.stringify(this.abis))
-    }
+    // if (!_.isEqual(savedAbis, this.abis)) { 
+      // console.log(chalk.red('\n\n\nWarning ABIs changed.\n\n\n'))
+      fs.writeFileSync(abisPath(), `module.exports = ${JSON.stringify(this.abis, false, 2)}`)
+    // }
     // Export addresses
     let savedAddresses = loadAddresses(this.chainID)
-    if (!_.isEqual(savedAddresses, this.addresses)) {
-      fs.writeFileSync(addressesPath(this.chainID), JSON.stringify(this.addresses))
-      console.log('Wrote addresses to:', chalk.green(addressesPath(this.chainID)))
-    }
+    // if (!_.isEqual(savedAddresses, this.addresses)) {
+      fs.writeFileSync(addressesPath(this.chainID), `module.exports = ${JSON.stringify(this.addresses, false, 2)}`)
+      // console.log('Wrote addresses to:', chalk.green(addressesPath(this.chainID)))
+    // }
   }
 
 /*******************

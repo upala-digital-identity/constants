@@ -4,3 +4,5 @@ yarn.lock
 constants/31337_addresses.json
 
 README.html
+constants/31337_addresses.js
+constants/31337_addresses.json
