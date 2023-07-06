@@ -4,6 +4,8 @@ const path = require('path');
 const ethers = require('ethers')
 const FormatTypes = ethers.utils.FormatTypes
 const chalk = require('chalk')
+const addresses = require('./constants/addresses.js')
+const abis = require('./constants/abis.js')
 
 /*****************
 GLOBAL UTILS/TOOLS
@@ -18,6 +20,7 @@ function validNetworkID(nameOrId) {
   if (nameOrId == '1' || nameOrId == 'Mainnet' || nameOrId == 'mainnet') return 1
 }
 
+// TODO depricate this
 function getDaiAddress(networkNameOrId) {
   let networkID = validNetworkID(networkNameOrId)
   if (networkID == '31337') return null
@@ -39,29 +42,39 @@ function isTestNetwork(networkNameOrId) {
     { return true } else { return false }
 }
 
+// TODO think of a function names here
+function getAddress(chainID, contractName) {
+  return addresses[chainID][contractName]
+}
+
+function getAbi(contractName) {
+  return abis[contractName]
+}
+
 /*******************
 INTERNAL UTILS/TOOLS
 ********************/
 // Used just within this module
 
 function loadAbis() {
-  return require(abisPath())
+  return abis
 }
 
 function loadAddresses(chainID) {
-  return require(addressesPath(chainID))
+  return addresses[chainID]
 }
 
 function abisPath() {
-  return path.join(__dirname, '/constants/abis.js')
+  return './constants/abis.js'
 }
 
+// TODO remove this
+// all addresses are now stored in a single file
 function addressesPath(chainID) {
   let filename = chainID.toString() + '_addresses.js'
-  return path.join(__dirname, '/constants/', filename)
+  return './constants/' + filename
 }
 
-// todo generalize class name into smth like NetworkConstants to use in other projects
 class UpalaConstants {
   constructor(chainID, options = {skipLoadFromDisk: false}) {
     this.chainID = chainID
@@ -100,6 +113,7 @@ class UpalaConstants {
       fs.writeFileSync(abisPath(), `module.exports = ${JSON.stringify(this.abis, false, 2)}`)
     // }
     // Export addresses
+    // TODO now all addresses are stored in a single file
     let savedAddresses = loadAddresses(this.chainID)
     // if (!_.isEqual(savedAddresses, this.addresses)) {
       fs.writeFileSync(addressesPath(this.chainID), `module.exports = ${JSON.stringify(this.addresses, false, 2)}`)
@@ -127,6 +141,7 @@ READING FROM CONSTANTS
     }
   }
 
+  // leave this function for local testing
   getAddress(contractName) {
       return this.addresses[contractName]
   }
@@ -140,4 +155,5 @@ exports.validNetworkID = validNetworkID
 exports.numConfirmations = numConfirmations
 exports.getDaiAddress = getDaiAddress
 exports.isTestNetwork = isTestNetwork
+exports.abis = abis
 exports.UpalaConstants = UpalaConstants

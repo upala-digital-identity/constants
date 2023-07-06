@@ -1,0 +1,12 @@
+module.exports = {
+  31337: {
+    "Upala": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    "SignedScoresPoolFactory": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+    "DAI": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+  },
+  100: {
+    "Upala": "0xD404Fb7635dB26D783dd8D2DF87Be1c504436268",
+    "DAI": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
+    "SignedScoresPoolFactory": "0xe0C6bB0914be3E49e13fFBc389cF659871a1bCD3",
+  }
+}
