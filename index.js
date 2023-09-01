@@ -25,7 +25,7 @@ function getDaiAddress(networkNameOrId) {
   let networkID = validNetworkID(networkNameOrId)
   if (networkID == '31337') return null
   if (networkID == '4') return '0xbC0dFaA78fe7bc8248b9F857292f680a1630b0C5'  // fakeDai mock of DAI
-  if (networkID == '100') return '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'
+  if (networkID == '100') return '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d' // Wrapped XDAI (WXDAI) - https://gnosis.blockscout.com/address/0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d
   if (networkID == '1') return '0x6B175474E89094C44Da98b954EedeAC495271d0F'
   return null
 }
@@ -78,9 +78,10 @@ function addressesPath(chainID) {
 class UpalaConstants {
   constructor(chainID, options = {skipLoadFromDisk: false}) {
     this.chainID = chainID
-    if (!options.skipLoadFromDisk)
+    if (!options.skipLoadFromDisk) {
       this.abis = loadAbis()
       this.addresses = loadAddresses(chainID)
+    }
   }
 
   /*******************
@@ -110,13 +111,13 @@ class UpalaConstants {
     let savedAbis = loadAbis()
     // if (!_.isEqual(savedAbis, this.abis)) { 
       // console.log(chalk.red('\n\n\nWarning ABIs changed.\n\n\n'))
-      fs.writeFileSync(abisPath(), `module.exports = ${JSON.stringify(this.abis, false, 2)}`)
+      // fs.writeFileSync(abisPath(), `module.exports = ${JSON.stringify(this.abis, false, 2)}`)
     // }
     // Export addresses
     // TODO now all addresses are stored in a single file
     let savedAddresses = loadAddresses(this.chainID)
     // if (!_.isEqual(savedAddresses, this.addresses)) {
-      fs.writeFileSync(addressesPath(this.chainID), `module.exports = ${JSON.stringify(this.addresses, false, 2)}`)
+      // fs.writeFileSync(addressesPath(this.chainID), `module.exports = ${JSON.stringify(this.addresses, false, 2)}`)
       // console.log('Wrote addresses to:', chalk.green(addressesPath(this.chainID)))
     // }
   }
@@ -143,7 +144,7 @@ READING FROM CONSTANTS
 
   // leave this function for local testing
   getAddress(contractName) {
-      return this.addresses[contractName]
+      return this.addresses && this.addresses[contractName]
   }
 
   getAbi(contractName) {
